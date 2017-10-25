@@ -84,10 +84,12 @@ namespace TitaniumAS.Opc.Client.Interop.System
 
         public static object CreateInstance(Guid clsid, string host, NetworkCredential credential)
         {
-            /*var serverType = Type.GetTypeFromCLSID(clsid, host);
-            var comObject = Activator.CreateInstance(serverType);
-            return comObject;*/
+            var type = string.IsNullOrEmpty(host) ?
+                                Type.GetTypeFromCLSID(clsid, true) :
+                                Type.GetTypeFromCLSID(clsid, host, true);
+            return Activator.CreateInstance(type);
 
+            /*
             var serverInfo = new ServerInfo();
             COSERVERINFO coserverInfo = serverInfo.Allocate(host, credential);
 
@@ -131,6 +133,7 @@ namespace TitaniumAS.Opc.Client.Interop.System
             }
 
             return results[0].pItf;
+            */
         }
 
         /// <summary>
